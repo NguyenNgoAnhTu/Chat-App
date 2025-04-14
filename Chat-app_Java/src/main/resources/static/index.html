@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>WebSocket Chat</title>
+    <script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/stompjs@2.3.3/lib/stomp.min.js"></script>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 30px; }
+        #chat { border: 1px solid #ccc; padding: 10px; height: 300px; overflow-y: scroll; }
+        #messageInput { width: 70%; }
+        #sender { width: 20%; }
+        p { margin: 5px 0; }
+    </style>
+</head>
+<body>
+<h2>🧵 Real-time WebSocket Chat</h2>
+
+<div id="chat"></div>
+
+<br>
+<input type="text" id="sender" placeholder="Your name" />
+<input type="text" id="messageInput" placeholder="Your message..." />
+<button onclick="sendMessage()">Send</button>
+
+<script>
+    let stompClient = null;
+
+    function connect() {
+        const socket = new SockJS('/ws');
+        stompClient = Stomp.over(socket);
+
+        stompClient.connect({}, function () {
+            console.log('✅ Connected to WebSocket');
+
+            stompClient.subscribe('/topic/messages', function (messageOutput) {
+                try {
+                    const msg = JSON.parse(messageOutput.body);
+                    if (msg && msg.sender && msg.content && msg.timestamp) {
+                        showMessage(`${msg.timestamp} - ${msg.sender}: ${msg.content}`);
+                    } else {
+                        showMessage("❌ Invalid message format: " + JSON.stringify(msg));
+                    }
+                } catch (e) {
+                    showMessage("❌ Error parsing message: " + e.message);
+                }
+            });
+        });
+    }
+
+    function sendMessage() {
+        const sender = document.getElementById('sender').value.trim();
+        const content = document.getElementById('messageInput').value.trim();
+
+        if (!sender || !content) {
+            alert("Please enter both your name and message.");
+            return;
+        }
+
+        if (stompClient) {
+            stompClient.send("/app/chat", {}, JSON.stringify({ sender, content }));
+            document.getElementById('messageInput').value = '';
+        }
+    }
+
+    function showMessage(message) {
+        const chat = document.getElementById('chat');
+        const p = document.createElement('p');
+        p.textContent = message;
+        chat.appendChild(p);
+        chat.scrollTop = chat.scrollHeight;
+    }
+
+    connect();
+</script>
+</body>
+</html>
