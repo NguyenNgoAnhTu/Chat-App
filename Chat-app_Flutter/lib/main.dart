@@ -1,10 +1,10 @@
+import 'package:chat_app/auth/login_or_register.dart';
 import 'package:chat_app/page/login.dart';
+import 'package:chat_app/page/register_page.dart';
 import 'package:flutter/material.dart';
-import 'package:firebase_core/firebase_core.dart';
+import 'package:chat_app/themes/light_mode.dart';
 
-void main() async{
-  WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
+void main() {
   runApp(const MyApp());
 }
 
@@ -15,11 +15,9 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-        debugShowCheckedModeBanner: false,
-        home: LoginPage(),
-      );
-
+      debugShowCheckedModeBanner: false,
+      theme: lightMode,
+      home: LoginOrRegister(),
+    );
   }
 }
-
-
