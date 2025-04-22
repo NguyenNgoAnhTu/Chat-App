@@ -20,7 +20,13 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("Home")),
+      backgroundColor: Theme.of(context).colorScheme.background,
+      appBar: AppBar(
+        title: const Text("Home"),
+        backgroundColor: Colors.transparent,
+        foregroundColor: Colors.grey,
+        elevation: 0,
+      ),
       drawer: const MyDrawer(),
       body: _buildUserList(),
     );
@@ -57,17 +63,25 @@ class HomePage extends StatelessWidget {
     BuildContext context,
   ) {
     // display all user except current user
-    return UserTile(
-      text: userData["email"],
-      ontap: () {
-        // tapped on a user
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => ChatPage(receiverEmail: userData["email"]),
-          ),
-        );
-      },
-    );
+    if (userData["email"] != _authService.getCurrentUser()) {
+      return UserTile(
+        text: userData["email"],
+        ontap: () {
+          // tapped on a user
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder:
+                  (context) => ChatPage(
+                    receiverEmail: userData["email"],
+                    receiverID: userData["uid"],
+                  ),
+            ),
+          );
+        },
+      );
+    } else {
+      return Container();
+    }
   }
 }

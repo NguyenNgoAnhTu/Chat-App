@@ -35,8 +35,17 @@ class MyDrawer extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.only(left: 25.0),
                 child: ListTile(
-                  title: const Text("H O M E"),
-                  leading: const Icon(Icons.home),
+                  title: Text(
+                    "H O M E",
+                    style: TextStyle(
+                      color: Theme.of(context).colorScheme.primary,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  leading: Icon(
+                    Icons.home,
+                    color: Theme.of(context).colorScheme.primary,
+                  ),
                   onTap: () {
                     //pop the drawer
                     Navigator.pop(context);
@@ -48,8 +57,17 @@ class MyDrawer extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.only(left: 25.0),
                 child: ListTile(
-                  title: const Text("S E T T I N G"),
-                  leading: const Icon(Icons.settings),
+                  title: Text(
+                    "S E T T I N G",
+                    style: TextStyle(
+                      color: Theme.of(context).colorScheme.primary,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  leading: Icon(
+                    Icons.settings,
+                    color: Theme.of(context).colorScheme.primary,
+                  ),
                   onTap: () {
                     //pop the drawer
                     Navigator.pop(context);
@@ -69,8 +87,17 @@ class MyDrawer extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.only(left: 25.0, bottom: 25.0),
             child: ListTile(
-              title: const Text("L O G O U T"),
-              leading: const Icon(Icons.logout),
+              title: Text(
+                "L O G O U T",
+                style: TextStyle(
+                  color: Theme.of(context).colorScheme.error,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              leading: Icon(
+                Icons.logout,
+                color: Theme.of(context).colorScheme.error,
+              ),
               onTap: logout,
             ),
           ),
